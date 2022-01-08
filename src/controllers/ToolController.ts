@@ -20,6 +20,17 @@ const getToolsOptions = {
   },
 };
 
+const postToolsOptions = {
+  schema: {
+    response: {
+      201: {
+        type: "array",
+        items: tool,
+      },
+    },
+  },
+};
+
 const getToolOptions = {
   schema: {
     response: {
@@ -62,15 +73,19 @@ const ToolsRoutes = (
     }
   );
 
-  fastify.post<{ Body: IToolsRouteBody }>("/tools", (request, reply) => {
-    const { name } = request.body;
-    const tool: Tool = {
-      name,
-      id: uuidv4(),
-    };
-    tools.push(tool);
-    reply.send(tool);
-  });
+  fastify.post<{ Body: IToolsRouteBody }>(
+    "/tools",
+    postToolsOptions,
+    (request, reply) => {
+      const { name } = request.body;
+      const tool: Tool = {
+        name,
+        id: uuidv4(),
+      };
+      tools.push(tool);
+      reply.code(201).send(tool);
+    }
+  );
   done();
 };
 
