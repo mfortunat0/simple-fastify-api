@@ -33,6 +33,10 @@ const postToolsOptions = {
 
 const getToolOptions = {
   schema: {
+    body: {
+      ...tool,
+      required: ["name"],
+    },
     response: {
       200: tool,
     },
